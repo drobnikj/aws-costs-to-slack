@@ -1,0 +1,8 @@
+{
+	"actorSpecification": 1,
+	"name": "aws-costs-to-slack",
+	"version": "0.0",
+	"buildTag": "latest",
+	"environmentVariables": {},
+	"dockerfile": "./Dockerfile"
+}
