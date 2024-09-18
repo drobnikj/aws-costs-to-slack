@@ -145,6 +145,7 @@ await Actor.main(async () => {
     await bot.chat.postMessage({
         channel: 'C0115RVFQ3B', // #eng-alerts
         // channel: 'C30TZDMKM', // test
+        // @ts-ignore
         response_type: 'in_channel',
         username: 'Yesterday AWS costs',
         text: `${Object.keys(yesterdayStats).map((key) => `${key} -> *$${yesterdayStats[key]}*`).join('\n')}\n\nChart -> ${imageUrl}`,
