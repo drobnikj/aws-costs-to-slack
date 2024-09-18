@@ -136,7 +136,7 @@ await Actor.main(async () => {
     await sleep(10000);
     const image = await page.screenshot({ fullPage: true });
     await browser.close();
-    await Actor.setValue('screenshot.jpg', image, { contentType: 'image/jpeg' });
+    await Actor.setValue('screenshot.jpg', Buffer.from(image), { contentType: 'image/jpeg' });
 
     const imageUrl = `https://api.apify.com/v2/key-value-stores/${Actor.getEnv().defaultKeyValueStoreId}/records/screenshot.jpg?disableRedirect=true`;
 
