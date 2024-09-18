@@ -1,4 +1,5 @@
 export const SERVICES_COLORS: Record<string, string> = {
+
     'AWS Backup': 'rgba(75, 0, 130, 1)',
     'AWS Cost Explorer': 'rgba(0, 128, 0, 1)',
     'AWS Glue': 'rgba(255, 127, 80, 1)',

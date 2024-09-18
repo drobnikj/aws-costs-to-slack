@@ -4,7 +4,6 @@ import AWS from 'aws-sdk';
 import { WebClient } from '@slack/web-api';
 import moment from 'moment';
 import { SERVICES_COLORS } from './services-colors.js';
-
 import { HTML_PAGE } from './html-page.js';
 
 const prettierResultsToKeyValue = (groups: AWS.CostExplorer.Groups) => {
@@ -75,11 +74,13 @@ await Actor.main(async () => {
             .filter((group) => (group.Keys && group.Keys[0] !== 'Tax'))
             .forEach((group) => {
                 if (!group.Keys) throw new Error('No service name');
-                const service = group.Keys[0];
+                let service = group.Keys[0];
+                // The MongoDB service got renamed, this unifies the two services in one chart dataset
+                if (service === 'MongoDB Atlas (Pay as You Go)') service='MongoDB Atlas (pay-as-you-go)';
                 const costs = parseFloat(group.Metrics?.UnblendedCost?.Amount ?? '0').toFixed(2);
                 if (datasets[service]) {
                     datasets[service].data.push(costs);
-                // datasets[service].backgroundColor.push(colors[i]);
+                    // datasets[service].backgroundColor.push(colors[i]);
                 } else {
                     datasets[service] = {
                         label: service,
@@ -142,8 +143,8 @@ await Actor.main(async () => {
     const slackBotToken = process.env.SLACK_BOT_TOKEN;
     const bot = new WebClient(slackBotToken);
     await bot.chat.postMessage({
-        channel: 'C30TZDMKM', // test
-        // channel: 'C0115RVFQ3B', // aws
+        channel: 'C0115RVFQ3B', // #eng-alerts
+        // channel: 'C30TZDMKM', // test
         response_type: 'in_channel',
         username: 'Yesterday AWS costs',
         text: `${Object.keys(yesterdayStats).map((key) => `${key} -> *$${yesterdayStats[key]}*`).join('\n')}\n\nChart -> ${imageUrl}`,
